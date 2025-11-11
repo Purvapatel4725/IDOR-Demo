@@ -40,7 +40,10 @@ This application demonstrates a classic LFI vulnerability where user input (via 
 
 1. **Build and start the container:**
    ```bash
-   docker compose up --build
+   docker-compose build
+   ```
+   ```bash
+   docker-compose up
    ```
 
 2. **Access the application:**
@@ -49,7 +52,7 @@ This application demonstrates a classic LFI vulnerability where user input (via 
 
 3. **Stop the container:**
    ```bash
-   docker compose down
+   docker-compose down
    ```
 
 ## Demo Script
