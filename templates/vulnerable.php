@@ -166,12 +166,38 @@
                     }
                 } else {
                     // Relative path - construct from includes directory
-                    $file_path = __DIR__ . '/includes/' . $page;
+                    $base_path = __DIR__ . '/includes/';
+                    $file_path = $base_path . $page;
                     
-                    // Resolve path traversal sequences
-                    $resolved_path = realpath($file_path);
-                    if ($resolved_path && file_exists($resolved_path) && is_file($resolved_path)) {
+                    // Resolve path traversal sequences manually
+                    // This allows ../../ sequences to work for the demo
+                    $normalized = str_replace('\\', '/', $file_path);
+                    $parts = explode('/', $normalized);
+                    $resolved_parts = array();
+                    
+                    foreach ($parts as $part) {
+                        if ($part === '..') {
+                            if (count($resolved_parts) > 0) {
+                                array_pop($resolved_parts);
+                            }
+                        } elseif ($part !== '.' && $part !== '') {
+                            $resolved_parts[] = $part;
+                        }
+                    }
+                    
+                    $resolved_path = implode('/', $resolved_parts);
+                    
+                    // Check if resolved path exists
+                    if (file_exists($resolved_path) && is_file($resolved_path) && is_readable($resolved_path)) {
                         $file_path = $resolved_path;
+                    } else {
+                        // Also try realpath() as fallback
+                        $realpath_result = realpath($file_path);
+                        if ($realpath_result && file_exists($realpath_result) && is_file($realpath_result)) {
+                            $file_path = $realpath_result;
+                        } else {
+                            $file_path = null;
+                        }
                     }
                 }
                 
