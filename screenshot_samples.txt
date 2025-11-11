@@ -1,0 +1,55 @@
+===========================================
+LFI Demo - Suggested Screenshots for Report
+===========================================
+
+This file lists suggested screenshots to capture for your course report.
+Aim for 10-15 screenshots total to document the demonstration.
+
+CATEGORY 1: Setup and Initial State (2-3 screenshots)
+-------------------------------------------------------
+1. Terminal showing "docker compose up --build" command and successful build
+2. Terminal showing container running (docker ps or docker compose ps)
+3. Browser showing the homepage (http://127.0.0.1:8080) - showing the warning message
+
+CATEGORY 2: Normal Functionality (2-3 screenshots)
+----------------------------------------------------
+4. Browser showing the About page (via ?page=about.php)
+5. Browser showing the Contact page (via ?page=contact.php)
+6. Browser showing the Help page (via ?page=help.php)
+
+CATEGORY 3: Vulnerability Demonstration (4-5 screenshots)
+----------------------------------------------------------
+7. Terminal showing curl command for path traversal attack
+8. Browser showing successful path traversal to README_FILES.txt
+   (URL: ?page=../../templates/includes/README_FILES.txt)
+9. Terminal output showing the contents of README_FILES.txt via curl
+10. Browser showing the vulnerable.php source code (if viewing source)
+    - Highlight the vulnerable include statement
+
+CATEGORY 4: Error Handling (2 screenshots)
+-------------------------------------------
+11. Browser showing error message for non-existent file
+    (URL: ?page=nonexistent.php)
+12. Terminal showing curl error response for invalid file
+
+CATEGORY 5: Code Analysis (2-3 screenshots)
+-------------------------------------------
+13. Screenshot of vulnerable.php showing the vulnerable code section
+    - Highlight: include __DIR__ . '/includes/' . $_GET['page'];
+14. Screenshot of the vulnerability warning comment in vulnerable.php
+15. Screenshot of project structure (file tree or directory listing)
+
+OPTIONAL: Remediation Example (1-2 screenshots)
+------------------------------------------------
+16. Screenshot of fixed code using whitelist approach (if implementing fix)
+17. Screenshot showing fixed code preventing path traversal
+
+===========================================
+Tips for Screenshots:
+- Use clear, readable fonts in terminal
+- Highlight important parts (vulnerable code, URLs, outputs)
+- Include context (full URL in browser, command in terminal)
+- Ensure text is legible when resized
+- Use annotations/arrows to point out key elements
+===========================================
+

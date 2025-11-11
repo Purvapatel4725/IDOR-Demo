@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  lfi-demo:
+    build: .
+    container_name: lfi-demo
+    ports:
+      - "127.0.0.1:8080:80"
+    restart: unless-stopped
+

