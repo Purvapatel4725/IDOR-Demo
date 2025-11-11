@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains a minimal, intentionally-vulnerable web application designed to demonstrate **Local File Inclusion (LFI)** vulnerabilities in PHP. This demo is intended for educational purposes in a classroom or lab environment.
+This repository contains a minimal, intentionally-vulnerable web application designed to demonstrate **Local File Inclusion (LFI)** vulnerabilities in PHP. This demo is intended for educational purposes only.
 
 ### What is LFI?
 
