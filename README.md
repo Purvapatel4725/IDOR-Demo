@@ -310,12 +310,7 @@ This provides an additional layer of protection at the PHP configuration level.
 ## Educational Use
 
 This demo is designed for:
-- Security courses and training
 - Understanding LFI vulnerabilities
 - Learning about secure coding practices
 - Demonstrating the importance of input validation
-
-## License
-
-This project is provided for educational purposes only. Use at your own risk in isolated lab environments.
 
