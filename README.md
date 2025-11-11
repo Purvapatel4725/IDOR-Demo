@@ -38,7 +38,15 @@ This application demonstrates a classic LFI vulnerability where user input (via 
 
 ### Running the Demo
 
-1. **Build and start the container:**
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Purvapatel4725/Local-File-Inclusion-Demo
+   ```
+   ```bash
+   cd /Local-File-Inclusion-Demo
+   ```
+
+2. **Build and start the container:**
    ```bash
    docker-compose build
    ```
@@ -46,11 +54,11 @@ This application demonstrates a classic LFI vulnerability where user input (via 
    docker-compose up
    ```
 
-2. **Access the application:**
+3. **Access the application:**
    - Open your browser and navigate to: `http://127.0.0.1:8080`
    - Or use curl: `curl http://127.0.0.1:8080`
 
-3. **Stop the container:**
+4. **Stop the container:**
    ```bash
    docker-compose down
    ```
