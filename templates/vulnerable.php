@@ -71,6 +71,8 @@
             <strong>🔴 INTENTIONAL VULNERABILITY:</strong> This file contains a Local File Inclusion (LFI) vulnerability. 
             The code below uses unsanitized user input to include files without proper validation:
             <pre style="margin: 10px 0; background: #fff; color: #333; border: 1px solid #ddd;">include __DIR__ . '/includes/' . $_GET['page'];</pre>
+            <strong>DEMO ONLY:</strong> This vulnerability allows reading files from anywhere in the container, 
+            including system files like /etc/passwd, /etc/hostname, and configuration files. 
             This is intentionally insecure for demonstration purposes.
         </div>
 
@@ -81,24 +83,56 @@
             // ============================================
             // This code is intentionally vulnerable to demonstrate LFI attacks.
             // In production, you MUST validate and sanitize user input.
+            // DEMO ONLY: This allows reading files from anywhere in the container.
             // ============================================
             
             if (isset($_GET['page']) && !empty($_GET['page'])) {
                 $page = $_GET['page'];
+                $file_path = null;
                 
                 // VULNERABLE CODE: Direct concatenation without sanitization
-                // This allows path traversal attacks (e.g., ../../etc/passwd)
-                $file_path = __DIR__ . '/includes/' . $page;
+                // This allows path traversal attacks to read ANY file in the container
+                // Examples: ../../etc/passwd, ../../etc/hostname, ../../proc/version
                 
-                // Check if file exists before including
-                if (file_exists($file_path)) {
+                // DEMO: Check if it's an absolute path (starts with /)
+                // This allows reading container system files directly
+                if (strpos($page, '/') === 0) {
+                    // Absolute path - try to read directly (for container files like /etc/passwd)
+                    if (file_exists($page) && is_file($page) && is_readable($page)) {
+                        $file_path = $page;
+                    }
+                } else {
+                    // Relative path - construct from includes directory
+                    $file_path = __DIR__ . '/includes/' . $page;
+                    
+                    // Resolve path traversal sequences
+                    $resolved_path = realpath($file_path);
+                    if ($resolved_path && file_exists($resolved_path) && is_file($resolved_path)) {
+                        $file_path = $resolved_path;
+                    }
+                }
+                
+                // Check if file exists and is readable
+                if ($file_path && file_exists($file_path) && is_file($file_path) && is_readable($file_path)) {
                     echo "<h2>Content of: " . htmlspecialchars($page) . "</h2>";
+                    echo "<p><strong>Resolved path:</strong> <code>" . htmlspecialchars($file_path) . "</code></p>";
                     echo "<hr>";
-                    // VULNERABLE: Using include without proper validation
-                    include $file_path;
+                    
+                    // For PHP files, include them; for text files, read and display
+                    $extension = pathinfo($file_path, PATHINFO_EXTENSION);
+                    if ($extension === 'php' && strpos($file_path, __DIR__) === 0) {
+                        // Only include PHP files from within the application directory
+                        // VULNERABLE: Using include without proper validation
+                        include $file_path;
+                    } else {
+                        // Read and display file contents (for text files, configs, system files, etc.)
+                        echo "<pre style='background: #263238; color: #aed581; padding: 15px; border-radius: 4px; overflow-x: auto;'>";
+                        echo htmlspecialchars(file_get_contents($file_path));
+                        echo "</pre>";
+                    }
                 } else {
                     echo '<div class="error">';
-                    echo '<strong>Error:</strong> The requested file "' . htmlspecialchars($page) . '" does not exist in the includes directory.';
+                    echo '<strong>Error:</strong> The requested file "' . htmlspecialchars($page) . '" does not exist or is not readable.';
                     echo '</div>';
                 }
             } else {

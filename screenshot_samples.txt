@@ -3,7 +3,7 @@ LFI Demo - Suggested Screenshots for Report
 ===========================================
 
 This file lists suggested screenshots to capture for your course report.
-Aim for 10-15 screenshots total to document the demonstration.
+Aim for 15-20 screenshots total to document the demonstration, including the container file reading examples.
 
 CATEGORY 1: Setup and Initial State (2-3 screenshots)
 -------------------------------------------------------
@@ -17,7 +17,7 @@ CATEGORY 2: Normal Functionality (2-3 screenshots)
 5. Browser showing the Contact page (via ?page=contact.php)
 6. Browser showing the Help page (via ?page=help.php)
 
-CATEGORY 3: Vulnerability Demonstration (4-5 screenshots)
+CATEGORY 3: Vulnerability Demonstration (6-8 screenshots)
 ----------------------------------------------------------
 7. Terminal showing curl command for path traversal attack
 8. Browser showing successful path traversal to README_FILES.txt
@@ -25,24 +25,31 @@ CATEGORY 3: Vulnerability Demonstration (4-5 screenshots)
 9. Terminal output showing the contents of README_FILES.txt via curl
 10. Browser showing the vulnerable.php source code (if viewing source)
     - Highlight the vulnerable include statement
+11. DEMO ONLY - Browser showing /etc/passwd contents
+    (URL: ?page=/etc/passwd) - Shows container user database
+12. DEMO ONLY - Browser showing /etc/hostname contents
+    (URL: ?page=/etc/hostname) - Shows container hostname
+13. DEMO ONLY - Terminal showing curl command reading /etc/passwd
+14. DEMO ONLY - Terminal output showing /proc/version or /etc/os-release
 
 CATEGORY 4: Error Handling (2 screenshots)
 -------------------------------------------
-11. Browser showing error message for non-existent file
+15. Browser showing error message for non-existent file
     (URL: ?page=nonexistent.php)
-12. Terminal showing curl error response for invalid file
+16. Terminal showing curl error response for invalid file
 
 CATEGORY 5: Code Analysis (2-3 screenshots)
 -------------------------------------------
-13. Screenshot of vulnerable.php showing the vulnerable code section
+17. Screenshot of vulnerable.php showing the vulnerable code section
     - Highlight: include __DIR__ . '/includes/' . $_GET['page'];
-14. Screenshot of the vulnerability warning comment in vulnerable.php
-15. Screenshot of project structure (file tree or directory listing)
+18. Screenshot of the vulnerability warning comment in vulnerable.php
+19. Screenshot of project structure (file tree or directory listing)
 
 OPTIONAL: Remediation Example (1-2 screenshots)
 ------------------------------------------------
-16. Screenshot of fixed code using whitelist approach (if implementing fix)
-17. Screenshot showing fixed code preventing path traversal
+20. Screenshot of fixed code using whitelist approach (if implementing fix)
+21. Screenshot showing fixed code preventing path traversal
+22. Screenshot showing error when trying to access /etc/passwd after fix
 
 ===========================================
 Tips for Screenshots:

