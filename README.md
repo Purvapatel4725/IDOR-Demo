@@ -10,7 +10,7 @@ This repository contains a minimal, intentionally-vulnerable web application des
 
 - Read sensitive files from the server (e.g., configuration files, source code)
 - Execute malicious code if file upload is also possible
-- Access system files through path traversal attacks (e.g., `../../etc/passwd`)
+- Access system files through path traversal attacks (e.g., `/etc/passwd`)
 
 ### Why is LFI Dangerous?
 
