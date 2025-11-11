@@ -2,7 +2,7 @@
 // Demo file: Contact page
 // This is a safe demo file included in the LFI demonstration
 ?>
-<div style="padding: 20px;">
+<div>
     <h2>Contact Information</h2>
     <p>This is a demonstration file for the Local File Inclusion (LFI) vulnerability demo.</p>
     <p><strong>File loaded:</strong> contact.php</p>
@@ -16,4 +16,3 @@
     </ul>
     <p><em>All contact information above is fake and for demonstration purposes only.</em></p>
 </div>
-

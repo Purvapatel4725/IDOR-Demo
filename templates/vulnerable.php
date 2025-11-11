@@ -5,75 +5,138 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LFI Demo - Page Viewer</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 50px auto;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #ecf0f1;
             padding: 20px;
-            background-color: #f5f5f5;
+        }
+        .header {
+            text-align: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #bdc3c7;
+            margin-bottom: 30px;
+            font-size: 12px;
+            color: #7f8c8d;
         }
         .container {
+            max-width: 900px;
+            margin: 0 auto;
             background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 40px;
+            border: 1px solid #ddd;
         }
         h1 {
-            color: #333;
-            border-bottom: 2px solid #f44336;
-            padding-bottom: 10px;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #34495e;
+            font-weight: 400;
         }
-        .vulnerability-note {
-            background-color: #ffebee;
-            border-left: 4px solid #f44336;
-            padding: 15px;
-            margin: 20px 0;
+        .warning {
+            background: #fff3cd;
+            border-left: 3px solid #ffc107;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #856404;
+        }
+        .warning strong {
+            font-weight: 600;
         }
         .content {
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 4px;
+            margin: 25px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+        }
+        .content h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #34495e;
+            font-weight: 400;
+        }
+        .content p {
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 14px;
+        }
+        .content code {
+            background: #e8e8e8;
+            padding: 2px 6px;
+            font-size: 13px;
+            color: #c0392b;
+        }
+        .content h3 {
+            font-size: 18px;
+            margin: 15px 0 10px 0;
+            color: #34495e;
+            font-weight: 400;
+        }
+        .content ul {
+            margin: 10px 0 15px 20px;
+        }
+        .content li {
+            margin-bottom: 6px;
+            color: #555;
+        }
+        .content hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 15px 0;
+        }
+        .content em {
+            color: #7f8c8d;
+            font-style: italic;
         }
         .error {
-            background-color: #ffebee;
-            border: 1px solid #f44336;
+            background: #f8d7da;
+            border-left: 3px solid #dc3545;
+            padding: 12px 15px;
+            color: #721c24;
+            font-size: 14px;
+        }
+        .error strong {
+            font-weight: 600;
+        }
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
             padding: 15px;
-            border-radius: 4px;
-            color: #c62828;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 15px 0;
         }
         .back-link {
             display: inline-block;
             margin-top: 20px;
-            padding: 10px 15px;
-            background-color: #2196F3;
+            padding: 8px 16px;
+            background: #3498db;
             color: white;
             text-decoration: none;
-            border-radius: 4px;
+            font-size: 14px;
         }
         .back-link:hover {
-            background-color: #0b7dda;
-        }
-        pre {
-            background-color: #263238;
-            color: #aed581;
-            padding: 15px;
-            border-radius: 4px;
-            overflow-x: auto;
+            background: #2980b9;
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        Copyright 2025 by Purva Patel
+    </div>
+    
     <div class="container">
-        <h1>Vulnerable Page Viewer</h1>
+        <h1>Page Viewer</h1>
         
-        <div class="vulnerability-note">
-            <strong>🔴 INTENTIONAL VULNERABILITY:</strong> This file contains a Local File Inclusion (LFI) vulnerability. 
-            The code below uses unsanitized user input to include files without proper validation:
-            <pre style="margin: 10px 0; background: #fff; color: #333; border: 1px solid #ddd;">include __DIR__ . '/includes/' . $_GET['page'];</pre>
-            <strong>DEMO ONLY:</strong> This vulnerability allows reading files from anywhere in the container, 
-            including system files like /etc/passwd, /etc/hostname, and configuration files. 
-            This is intentionally insecure for demonstration purposes.
+        <div class="warning">
+            <strong>Warning:</strong> This application contains intentional security vulnerabilities for educational purposes only. Do not expose this application to the internet or use it in production environments.
         </div>
 
         <div class="content">
@@ -126,7 +189,7 @@
                         include $file_path;
                     } else {
                         // Read and display file contents (for text files, configs, system files, etc.)
-                        echo "<pre style='background: #263238; color: #aed581; padding: 15px; border-radius: 4px; overflow-x: auto;'>";
+                        echo "<pre>";
                         echo htmlspecialchars(file_get_contents($file_path));
                         echo "</pre>";
                     }
@@ -147,4 +210,3 @@
     </div>
 </body>
 </html>
-

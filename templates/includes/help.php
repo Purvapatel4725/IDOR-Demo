@@ -2,7 +2,7 @@
 // Demo file: Help page
 // This is a safe demo file included in the LFI demonstration
 ?>
-<div style="padding: 20px;">
+<div>
     <h2>Help & Documentation</h2>
     <p>This is a demonstration file for the Local File Inclusion (LFI) vulnerability demo.</p>
     <p><strong>File loaded:</strong> help.php</p>
@@ -17,4 +17,3 @@
     </ul>
     <p><em>This is safe demo content only. No sensitive information is stored in this file.</em></p>
 </div>
-
