@@ -185,7 +185,6 @@ Path traversal from `includes/` using `../` goes up to `/var/www/html/`, allowin
 ├── README.md                 # This file
 ├── docker-compose.yml        # Docker Compose configuration
 ├── Dockerfile               # Docker image definition
-├── demo_commands.txt        # Exact commands for reproduction
 └── templates/
     ├── index.php            # Homepage with navigation
     ├── vulnerable.php       # The vulnerable file inclusion handler
