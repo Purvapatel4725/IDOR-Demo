@@ -1,4 +1,4 @@
-# Local File Inclusion (LFI) Vulnerability Demo
+# Local File Inclusion (LFI) Vulnerability Demo (Group 18)
 
 ## Overview
 
@@ -311,8 +311,4 @@ This demo is designed for:
 ## License
 
 This project is provided for educational purposes only. Use at your own risk in isolated lab environments.
-
-## Support
-
-For questions or issues related to this demo, please refer to your course instructor or lab documentation.
 
